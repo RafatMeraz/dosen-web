@@ -1,0 +1,441 @@
+{
+	"info": {
+		"_postman_id": "1ae4b856-4502-4c9f-abf7-0c57fba6b466",
+		"name": "Dosen",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15330818"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Cheems",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "01947423941",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "cheem1@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "manager",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "division_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "designation",
+									"value": "Sales Person three",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/panacea/Desktop/dosen_web/public/storage/profile/default_profile.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{live}}/register",
+							"host": [
+								"{{live}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "6|f2LTv0tfjUpF2Mz35eM7tco6m0lbil1SEXUINhEZ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{live}}/logout",
+							"host": [
+								"{{live}}"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phone",
+									"value": "01947423947",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{live}}/login",
+							"host": [
+								"{{live}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "division",
+			"item": [
+				{
+					"name": "store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Comilla",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{live}}/division-store",
+							"host": [
+								"{{live}}"
+							],
+							"path": [
+								"division-store"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "division",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{live}}/divisions",
+							"host": [
+								"{{live}}"
+							],
+							"path": [
+								"divisions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "shop",
+			"item": [
+				{
+					"name": "store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Comilla",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{live}}/shop-store",
+							"host": [
+								"{{live}}"
+							],
+							"path": [
+								"shop-store"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "shops",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{live}}/shops",
+							"host": [
+								"{{live}}"
+							],
+							"path": [
+								"shops"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "employee",
+			"item": [
+				{
+					"name": "all_employees",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phone",
+									"value": "01947423948",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{live}}/all_employees",
+							"host": [
+								"{{live}}"
+							],
+							"path": [
+								"all_employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "employee",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{live}}/employee/1",
+							"host": [
+								"{{live}}"
+							],
+							"path": [
+								"employee",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "employee_update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "division_id",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{live}}/employee/update/1",
+							"host": [
+								"{{live}}"
+							],
+							"path": [
+								"employee",
+								"update",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "employee_delete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{live}}/employee/delete/2",
+							"host": [
+								"{{live}}"
+							],
+							"path": [
+								"employee",
+								"delete",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "employee_block",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{live}}/employee/block/2",
+							"host": [
+								"{{live}}"
+							],
+							"path": [
+								"employee",
+								"block",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "19|GXrLnnV3sRudO7CY1lGJTvdcGs8tEjfcU7Hezo65",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "local",
+			"value": "http://localhost:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "live",
+			"value": "http://dosenapp.com/api",
+			"type": "string"
+		}
+	]
+}
