@@ -15,6 +15,7 @@ class AuthController extends Controller
 {
     // Traversy media snactum auth api
     // register
+    // yo
     public function register(Request $request)
     {
 
