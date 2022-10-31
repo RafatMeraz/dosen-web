@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\DivisionController;
 use App\Http\Controllers\Api\EmployeeController;
+use App\Http\Controllers\Api\VisitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +20,8 @@ use App\Http\Controllers\Api\EmployeeController;
 */
 
 // Public
-Route::POST('/register', [AuthController::class, 'register']);
-Route::POST('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 
 Route::group(['middleware' => ['auth:sanctum','block']], function() {
@@ -33,18 +34,27 @@ Route::group(['middleware' => ['auth:sanctum','block']], function() {
     Route::post('/employee/delete/{id?}', [EmployeeController::class, 'delete']);
 
 
+
+         //Store
+    // Route::get('/visits', [VisitController::class, 'index']);
+    Route::get('/visits', [VisitController::class, 'index']);
+    Route::post('/visit-store', [VisitController::class, 'store']);
+
+
+
+
+
     //Division
     Route::get('/divisions', [DivisionController::class, 'index']);
-    Route::POST('/division-store', [DivisionController::class, 'store']);
+    Route::post('/division-store', [DivisionController::class, 'store']);
 
 
     //Store
     Route::get('/shops', [ShopController::class, 'index']);
-    Route::POST('/shop-store', [ShopController::class, 'store']);
-
+    Route::post('/shop-store', [ShopController::class, 'store']);
 
     // Logout
-    Route::POST('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout']);
   });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

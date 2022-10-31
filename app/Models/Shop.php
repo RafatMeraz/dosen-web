@@ -20,4 +20,10 @@ class Shop extends Model
     {
         return $this->belongsTo(Division::class);
     }
+
+
+    public function visits()
+    {
+        return $this->hasMany(Visit::class);
+    }
 }

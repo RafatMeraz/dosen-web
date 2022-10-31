@@ -15,6 +15,13 @@ return new class extends Migration
     {
         Schema::create('visits', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('user_id')->onDelete('cascade');
+            $table->foreignId('shop_id');
+
+            $table->string('remarks');
+            $table->string('image')->nullable();
+            
             $table->timestamps();
         });
     }

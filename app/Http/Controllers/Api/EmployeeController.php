@@ -14,11 +14,19 @@ class EmployeeController extends Controller
 {
     public function all_employees()
     {
-        $data = DB::table('users')
-        ->select('users.id as employee_id',
-            'users.name as employee_name',
-            'users.designation as designation',)
-        ->get();
+        $startDate = date("Y-m-d", strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . "-1 month"));
+        $endDate = date("Y-m-d");
+
+        $data = DB::table("users")
+            ->leftJoin('visits', 'visits.user_id', 'users.id')
+            ->select(
+                    'users.id as employee_id', 
+                    'users.name as employee_name', 
+                    'users.designation as designation',
+                    'users.created_at as created_at',
+                    DB::raw("count(visits.id) as total_visits"))
+        ->groupBy('users.id')
+        ->paginate(15);
 
          return response()->json([
              'success' => true,

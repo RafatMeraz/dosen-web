@@ -48,7 +48,7 @@ class AuthController extends Controller
                     'message' => 'Image Failed!',
                 ], 400);
             }
-            $image = explode("public/",$image);
+            // $image = explode("public/",$image);
             try {
                 $user = User::create([
                     'name'=> $request->name,

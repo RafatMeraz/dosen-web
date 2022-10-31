@@ -30,6 +30,11 @@ class User extends Authenticatable
         'status', // 1 = block,  0  = active
     ];
 
+    public function visits()
+    {
+        return $this->hasMany(Visit::class);
+    }
+
     public function division()
     {
         return $this->belongsTo(Division::class);
