@@ -10,13 +10,12 @@ use App\Http\Controllers\Api\VisitController;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+|   Author: Shajedul Hasan Arman - armanhassan504@gmail.com
 |--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
+|   Laravel Framework 9.37.0
+|   Composer version 2.4.4 2022-11
+|   PHP 8.1.12
+|   Auth Custom from Traversy media snactum auth api
 */
 
 // Public
@@ -26,30 +25,24 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::group(['middleware' => ['auth:sanctum','block']], function() {
 
-    // User
+    // User & Employee
     Route::get('/all_employees', [EmployeeController::class, 'all_employees']);
     Route::post('/employee/{id?}', [EmployeeController::class, 'employee']);
     Route::post('/employee/update/{id?}', [EmployeeController::class, 'update']);
     Route::post('/employee/block/{id?}', [EmployeeController::class, 'block']);
     Route::post('/employee/delete/{id?}', [EmployeeController::class, 'delete']);
 
-
-
-         //Store
-    // Route::get('/visits', [VisitController::class, 'index']);
+    // Visits
     Route::get('/visits', [VisitController::class, 'index']);
     Route::post('/visit-store', [VisitController::class, 'store']);
-
-
-
-
+    Route::post('/visit-option', [VisitController::class, 'option']);
 
     //Division
     Route::get('/divisions', [DivisionController::class, 'index']);
     Route::post('/division-store', [DivisionController::class, 'store']);
 
 
-    //Store
+    //Shop
     Route::get('/shops', [ShopController::class, 'index']);
     Route::post('/shop-store', [ShopController::class, 'store']);
 

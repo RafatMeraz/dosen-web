@@ -13,12 +13,9 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    // Traversy media snactum auth api
     // register
-    // yo
     public function register(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'image' => 'mimes:jpeg,png,jpg',
@@ -49,8 +46,8 @@ class AuthController extends Controller
                 ], 400);
             }
             // $image = explode("public/",$image);
-            try {
-                $user = User::create([
+ 
+            $user = User::create([
                     'name'=> $request->name,
                     'phone'=> $request->phone,
                     'email'=> $request->email,
@@ -59,27 +56,8 @@ class AuthController extends Controller
                     'password'=> Hash::make($request->password),
                     'image'=> $image[1],
                     'division_id'=> $request->division_id,
-                ]);
-                $token = $user->createToken('userToken')->plainTextToken;
-                return response()->json([
-                    'success' => true,
-                    'message' => 'User Registered Succesfully!',
-                    'data' => [
-                        'accessToken' => $token,
-                        'user' => $user,
-                    ],
-                ], 200);
-            } catch (\Throwable $th) {
-                Log::error($th->getMessage());
-                return response()->json([
-                    'success' => false,
-                    'message' => 'User Registration Failed!',
-                ], 400);
-            }
-
-        }
-
-            try {
+            ]);
+        } else {
                 $user = User::create([
                     'name'=> $request->name,
                     'phone'=> $request->phone,
@@ -90,23 +68,12 @@ class AuthController extends Controller
                     'image'=> NULL,
                     'division_id'=> $request->division_id,
                 ]);
-                $token = $user->createToken('userToken')->plainTextToken;
+        }   
                 return response()->json([
                     'success' => true,
                     'message' => 'User Registered Succesfully!',
-                    'data' => [
-                        'accessToken' => $token,
-                        'user' => $user,
-                    ],
+                    'data' =>  $user
                 ], 200);
-            } catch (\Throwable $th) {
-                Log::error($th->getMessage());
-                return response()->json([
-                    'success' => false,
-                    'message' => 'User Registration Failed!', error($th->getMessage()),
-                ], 400);
-            }
-        // }
     }
 
 
@@ -176,3 +143,96 @@ class AuthController extends Controller
         ], 200);
     }
 }
+
+
+
+
+// public function register(Request $request)
+// {
+//     $validator = Validator::make($request->all(), [
+//         'name' => 'required|string|max:255',
+//         'image' => 'mimes:jpeg,png,jpg',
+//         'phone' => 'required|unique:users,phone',
+//         'role' => 'required',
+//         'password' => 'required|min:8',
+//     ]);
+
+//     if ($validator->fails()) {
+//          return response()->json([
+//             'success' => false,
+//             'message' => $validator->messages()->first(),
+//         ], 400);
+//     }
+
+//     if ($request->hasFile('image'))
+//     {
+//         $image = '';
+//         try {
+//             $image = $request->file('image')->storeAs(
+//                 'public/image', Str::random(56).'.'.$request->file('image')->getClientOriginalExtension()
+//             );
+//         } catch (\Throwable $th) {
+//             Log::error($th->getMessage());
+//             return response()->json([
+//                 'success' => false,
+//                 'message' => 'Image Failed!',
+//             ], 400);
+//         }
+//         // $image = explode("public/",$image);
+//         try {
+//             $user = User::create([
+//                 'name'=> $request->name,
+//                 'phone'=> $request->phone,
+//                 'email'=> $request->email,
+//                 'role'=> $request->role,
+//                 'designation'=> $request->designation,
+//                 'password'=> Hash::make($request->password),
+//                 'image'=> $image[1],
+//                 'division_id'=> $request->division_id,
+//             ]);
+//             $token = $user->createToken('userToken')->plainTextToken;
+//             return response()->json([
+//                 'success' => true,
+//                 'message' => 'User Registered Succesfully!',
+//                 'data' => [
+//                     'accessToken' => $token,
+//                     'user' => $user,
+//                 ],
+//             ], 200);
+//         } catch (\Throwable $th) {
+//             Log::error($th->getMessage());
+//             return response()->json([
+//                 'success' => false,
+//                 'message' => 'User Registration Failed!',
+//             ], 400);
+//         }
+
+//     }
+//         try {
+//             $user = User::create([
+//                 'name'=> $request->name,
+//                 'phone'=> $request->phone,
+//                 'email'=> $request->email,
+//                 'role'=> $request->role,
+//                 'designation'=> $request->designation,
+//                 'password'=> Hash::make($request->password),
+//                 'image'=> NULL,
+//                 'division_id'=> $request->division_id,
+//             ]);
+//             $token = $user->createToken('userToken')->plainTextToken;
+//             return response()->json([
+//                 'success' => true,
+//                 'message' => 'User Registered Succesfully!',
+//                 'data' => [
+//                     'accessToken' => $token,
+//                     'user' => $user,
+//                 ],
+//             ], 200);
+//         } catch (\Throwable $th) {
+//             Log::error($th->getMessage());
+//             return response()->json([
+//                 'success' => false,
+//                 'message' => 'User Registration Failed!', error($th->getMessage()),
+//             ], 400);
+//         }
+// }
