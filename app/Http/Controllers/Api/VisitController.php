@@ -22,7 +22,6 @@ class VisitController extends Controller
     {
         // return 'uo';
         $data = DB::table("visits")
-        // ->join('users', 'users.id', 'visits.user_id')
         ->join('shops', 'shops.id', 'visits.shop_id')
         ->select(
             'visits.id as id',
@@ -32,24 +31,8 @@ class VisitController extends Controller
             'shops.name as shop_name',
             'shops.address as shop_address',
         )
-        // ->select( 
-        //     'users.id as employee_id', 
-        //     'users.name as employee_name', 
-        //     'users.designation as designation',
-        //     'users.role',
-        //     'users.phone',
-        //     'users.division_id',
-        //     'users.created_at as created_at',
-        //     DB::raw("count(visits.id) as total_visits"),
-        //     DB::raw("(
-        //             SELECT COUNT(visits.id) FROM visits 
-        //             WHERE visits.user_id = users.id AND
-        //             visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as last30daysVisits ")
-        // )->where('users.id', $id)
-        // ->groupBy('users.id')
-        // ->get();
+        ->orderBy('id', 'DESC')
         ->paginate(25);
-
          return response()->json([
              'success' => true,
              'data' => $data,
@@ -60,12 +43,9 @@ class VisitController extends Controller
 
     public function detail($id)
     {
-        # code...
         // return $id;
-
         $startDate = date("Y-m-d", strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . "-1 month"));
         $endDate = date("Y-m-d");
-
 
         $data = DB::table("visits")
         ->join('users', 'users.id', 'visits.user_id')
@@ -86,13 +66,6 @@ class VisitController extends Controller
                 WHERE visits.shop_id = shops.id 
                 AND
                 visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as thisShop_last30days_visits "),
-            // DB::raw("(
-            //     SELECT COUNT(visits.id) FROM visits 
-            //     WHERE visits.shop_id = shops.id
-            //     AND
-            //     WHERE visits.user_id = users.id
-            //     AND
-            //     visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as thisUser_last30days_visits "),
         )
         ->groupBy('visits.id')
         ->get();
@@ -184,7 +157,55 @@ class VisitController extends Controller
 
     public function option(Request $request)
     {
-        # code...
-        return 'Request $request';
+        // return $request->all();
+
+        $startDate = date("Y-m-d", strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . "-1 month"));
+        $endDate = date("Y-m-d");
+
+        // Option year
+        if ($request->has('year')) {
+            return $request->all();
+        }
+
+        // Option month
+        else if ($request->has('month')) {
+            return $request->all();
+        }
+
+        // Option user_id
+        else if ($request->has('user_id')) {
+            return $request->all();
+        }
+
+        // return 'All';
+        else {
+            $data = DB::table("visits")
+            ->join('users', 'users.id', 'visits.user_id')
+            ->join('shops', 'shops.id', 'visits.shop_id')
+            ->select(
+                'visits.id as visit_id',
+                'visits.remarks as remarks',
+                'visits.image as visit_image',
+                'visits.user_id as user_id',
+                'users.name as user_name',
+                'users.image as user_image',
+                'shops.id as shop_id',
+                'shops.name as shop_name',
+                'shops.address as shop_address',
+                // DB::raw("(
+                //     SELECT COUNT(visits.id) FROM visits 
+                //     WHERE visits.shop_id = shops.id 
+                //     AND
+                //     visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as thisShop_last30days_visits "),
+            )
+            // ->groupBy('visits.id')
+            ->orderBy('visits.id', 'DESC')
+            ->paginate(25);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ], 200);
     }
 }
