@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth:sanctum','block']], function() {
 
     // Visits
     Route::get('/visits', [VisitController::class, 'index']);
+    Route::post('/visit-detail/{id?}', [VisitController::class, 'detail']);
     Route::post('/visit-store', [VisitController::class, 'store']);
     Route::post('/visit-option', [VisitController::class, 'option']);
 

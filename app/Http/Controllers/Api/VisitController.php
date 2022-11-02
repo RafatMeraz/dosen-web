@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Visit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +20,86 @@ class VisitController extends Controller
 
     public function index()
     {
-        return 'uo';
+        // return 'uo';
+        $data = DB::table("visits")
+        // ->join('users', 'users.id', 'visits.user_id')
+        ->join('shops', 'shops.id', 'visits.shop_id')
+        ->select(
+            'visits.id as id',
+            'visits.remarks',
+            'visits.created_at',
+            'shops.id as shop_id',
+            'shops.name as shop_name',
+            'shops.address as shop_address',
+        )
+        // ->select( 
+        //     'users.id as employee_id', 
+        //     'users.name as employee_name', 
+        //     'users.designation as designation',
+        //     'users.role',
+        //     'users.phone',
+        //     'users.division_id',
+        //     'users.created_at as created_at',
+        //     DB::raw("count(visits.id) as total_visits"),
+        //     DB::raw("(
+        //             SELECT COUNT(visits.id) FROM visits 
+        //             WHERE visits.user_id = users.id AND
+        //             visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as last30daysVisits ")
+        // )->where('users.id', $id)
+        // ->groupBy('users.id')
+        // ->get();
+        ->paginate(25);
+
+         return response()->json([
+             'success' => true,
+             'data' => $data,
+         ], 200);
+    }
+
+
+
+    public function detail($id)
+    {
+        # code...
+        // return $id;
+
+        $startDate = date("Y-m-d", strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . "-1 month"));
+        $endDate = date("Y-m-d");
+
+
+        $data = DB::table("visits")
+        ->join('users', 'users.id', 'visits.user_id')
+        ->join('shops', 'shops.id', 'visits.shop_id')
+        ->where('visits.id', $id)
+        ->select(
+            'visits.id as visit_id',
+            'visits.remarks as remarks',
+            'visits.image as visit_image',
+            'visits.user_id as user_id',
+            'users.name as user_name',
+            'users.image as user_image',
+            'shops.id as shop_id',
+            'shops.name as shop_name',
+            'shops.address as shop_address',
+            DB::raw("(
+                SELECT COUNT(visits.id) FROM visits 
+                WHERE visits.shop_id = shops.id 
+                AND
+                visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as thisShop_last30days_visits "),
+            // DB::raw("(
+            //     SELECT COUNT(visits.id) FROM visits 
+            //     WHERE visits.shop_id = shops.id
+            //     AND
+            //     WHERE visits.user_id = users.id
+            //     AND
+            //     visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as thisUser_last30days_visits "),
+        )
+        ->groupBy('visits.id')
+        ->get();
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ], 200);
     }
 
 
@@ -98,5 +178,13 @@ class VisitController extends Controller
                 ], 400);
             }
         // }
+    }
+
+
+
+    public function option(Request $request)
+    {
+        # code...
+        return 'Request $request';
     }
 }

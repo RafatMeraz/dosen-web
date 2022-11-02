@@ -42,7 +42,7 @@ class EmployeeController extends Controller
                     visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as last30daysVisits ")
         )
         ->groupBy('users.id')
-        ->paginate(15);
+        ->paginate(25);
         // ->get();
 
          return response()->json([
@@ -58,7 +58,7 @@ class EmployeeController extends Controller
         $startDate = date("Y-m-d", strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . "-1 month"));
         $endDate = date("Y-m-d");
         
-        return $data = DB::table("users")
+        $data = DB::table("users")
         ->leftJoin('visits', 'visits.user_id', 'users.id')
         ->select( 
             'users.id as employee_id', 
