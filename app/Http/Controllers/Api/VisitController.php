@@ -16,27 +16,230 @@ use Illuminate\Support\Facades\Validator;
 class VisitController extends Controller
 {
 
-
-
-    public function index()
+    public function index(Request $request)
     {
-        // return 'uo';
-        $data = DB::table("visits")
-        ->join('shops', 'shops.id', 'visits.shop_id')
-        ->select(
-            'visits.id as id',
-            'visits.remarks',
-            'visits.created_at',
-            'shops.id as shop_id',
-            'shops.name as shop_name',
-            'shops.address as shop_address',
-        )
-        ->orderBy('id', 'DESC')
-        ->paginate(25);
-         return response()->json([
-             'success' => true,
-             'data' => $data,
-         ], 200);
+        // Option year
+        if ($request->has('year')) {
+            // return $request->all();
+            $year = $request->year;
+            $yearStart = $year.'-01-01';
+            $yearEnd = $year.'-12-31';
+            // $today = date("Y-m-d"); // 2022-11-02 default
+            // $startDate = date("Y-m-d", strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . "-1 year"));
+            if ($request->has('user_id')) {
+                $data = DB::table("visits")
+                ->join('users', 'users.id', 'visits.user_id')
+                ->join('shops', 'shops.id', 'visits.shop_id')
+                ->whereBetween('visits.created_at', [ $yearStart, $yearEnd ])
+                ->where('visits.user_id', $request->user_id)
+                ->select(
+                    'visits.id as visit_id',
+                    'visits.remarks as remarks',
+                    'visits.image as visit_image',
+                    'visits.created_at as visit_dateTime',
+                    'visits.user_id as employee_id',
+                    'users.name as employee_name',
+                    'users.image as employee_image',
+                    'shops.id as shop_id',
+                    'shops.name as shop_name',
+                    'shops.address as shop_address',
+                )
+                ->groupBy('visits.id')
+                ->orderBy('visits.id', 'DESC')
+                ->paginate(25);
+            } else {
+                $data = DB::table("visits")
+                ->join('users', 'users.id', 'visits.user_id')
+                ->join('shops', 'shops.id', 'visits.shop_id')
+                ->whereBetween('visits.created_at', [ $yearStart, $yearEnd ])
+                ->select(
+                    'visits.id as visit_id',
+                    'visits.remarks as remarks',
+                    'visits.image as visit_image',
+                    'visits.created_at as visit_dateTime',
+                    'visits.user_id as employee_id',
+                    'users.name as employee_name',
+                    'users.image as employee_image',
+                    'shops.id as shop_id',
+                    'shops.name as shop_name',
+                    'shops.address as shop_address',
+                )
+                ->groupBy('visits.id')
+                ->orderBy('visits.id', 'DESC')
+                ->paginate(25);
+            }
+        }
+
+        // Option month
+        else if ($request->has('month') ) {
+            // return $request->all();
+            if (empty($request->year)) {
+                $year = date("Y");
+            }else {
+                $year = $request->year;
+            }
+            $month = $request->month;
+            $monthStart = $year.'-'.$month.'-01';
+            $monthEnd = $year.'-'.$month.'-31';
+            // $today = date("Y-m-d"); // 2022-11-02 default
+            if ($request->has('user_id')) {
+                $data = DB::table("visits")
+                ->join('users', 'users.id', 'visits.user_id')
+                ->join('shops', 'shops.id', 'visits.shop_id')
+                ->where('visits.user_id', $request->user_id)
+                ->whereBetween('visits.created_at', [ $monthStart . " 00:00:00"  , $monthEnd . " 23:59:59"])
+                ->select(
+                    'visits.id as visit_id',
+                    'visits.remarks as remarks',
+                    'visits.image as visit_image',
+                    'visits.created_at as visit_dateTime',
+                    'visits.user_id as employee_id',
+                    'users.name as employee_name',
+                    'users.image as employee_image',
+                    'shops.id as shop_id',
+                    'shops.name as shop_name',
+                    'shops.address as shop_address',
+                )
+                ->groupBy('visits.id')
+                ->orderBy('visits.id', 'DESC')
+                ->paginate(25);
+            } else {
+                $data = DB::table("visits")
+                ->join('users', 'users.id', 'visits.user_id')
+                ->join('shops', 'shops.id', 'visits.shop_id')
+                ->whereBetween('visits.created_at', [ $monthStart . " 00:00:00"  , $monthEnd . " 23:59:59"])
+                ->select(
+                    'visits.id as visit_id',
+                    'visits.remarks as remarks',
+                    'visits.image as visit_image',
+                    'visits.created_at as visit_dateTime',
+                    'visits.user_id as employee_id',
+                    'users.name as employee_name',
+                    'users.image as employee_image',
+                    'shops.id as shop_id',
+                    'shops.name as shop_name',
+                    'shops.address as shop_address',
+                )
+                ->groupBy('visits.id')
+                ->orderBy('visits.id', 'DESC')
+                ->paginate(25);
+            }
+        }
+
+        // Option user_id
+        else if ($request->has('user_id')) {
+            // return $request->all();
+            if ($request->has('month') ) {
+                if (empty($request->year)) {
+                    $year = date("Y");
+                }else {
+                    $year = $request->year;
+                }
+                $month = $request->month;
+                $monthStart = $year.'-'.$month.'-01';
+                $monthEnd = $year.'-'.$month.'-31';
+                $data = DB::table("visits")
+                ->join('users', 'users.id', 'visits.user_id')
+                ->join('shops', 'shops.id', 'visits.shop_id')
+                ->where('visits.user_id', $request->user_id)
+                ->whereBetween('visits.created_at', [ $monthStart . " 00:00:00"  , $monthEnd . " 23:59:59"])
+                ->select(
+                    'visits.id as visit_id',
+                    'visits.remarks as remarks',
+                    'visits.image as visit_image',
+                    'visits.created_at as visit_dateTime',
+                    'visits.user_id as employee_id',
+                    'users.name as employee_name',
+                    'users.image as employee_image',
+                    'shops.id as shop_id',
+                    'shops.name as shop_name',
+                    'shops.address as shop_address',
+                )
+                ->groupBy('visits.id')
+                ->orderBy('visits.id', 'DESC')
+                ->paginate(25);
+
+            }
+            else if ($request->has('year')) {
+                $year = $request->year;
+                $yearStart = $year.'-01-01';
+                $yearEnd = $year.'-12-31';
+                $data = DB::table("visits")
+                ->join('users', 'users.id', 'visits.user_id')
+                ->join('shops', 'shops.id', 'visits.shop_id')
+                ->whereBetween('visits.created_at', [ $yearStart, $yearEnd ])
+                ->where('visits.user_id', $request->user_id)
+                ->select(
+                    'visits.id as visit_id',
+                    'visits.remarks as remarks',
+                    'visits.image as visit_image',
+                    'visits.created_at as visit_dateTime',
+                    'visits.user_id as employee_id',
+                    'users.name as employee_name',
+                    'users.image as employee_image',
+                    'shops.id as shop_id',
+                    'shops.name as shop_name',
+                    'shops.address as shop_address',
+                )
+                ->groupBy('visits.id')
+                ->orderBy('visits.id', 'DESC')
+                ->paginate(25);
+            }
+            else {
+                $data = DB::table("visits")
+                ->join('users', 'users.id', 'visits.user_id')
+                ->join('shops', 'shops.id', 'visits.shop_id')
+                ->where('visits.user_id', $request->user_id)
+                ->select(
+                    'visits.id as visit_id',
+                    'visits.remarks as remarks',
+                    'visits.image as visit_image',
+                    'visits.created_at as visit_dateTime',
+                    'visits.user_id as employee_id',
+                    'users.name as employee_name',
+                    'users.image as employee_image',
+                    'shops.id as shop_id',
+                    'shops.name as shop_name',
+                    'shops.address as shop_address',
+                )
+                // ->groupBy('visits.id')
+                ->orderBy('visits.id', 'DESC')
+                ->paginate(25);
+            }
+        }
+
+        // return 'All';
+        else {
+            $data = DB::table("visits")
+            ->join('users', 'users.id', 'visits.user_id')
+            ->join('shops', 'shops.id', 'visits.shop_id')
+            ->select(
+                'visits.id as visit_id',
+                'visits.remarks as remarks',
+                'visits.image as visit_image',
+                'visits.created_at as visit_dateTime',
+                'visits.user_id as employee_id',
+                'users.name as employee_name',
+                'users.image as employee_image',
+                'shops.id as shop_id',
+                'shops.name as shop_name',
+                'shops.address as shop_address',
+                // DB::raw("(
+                //     SELECT COUNT(visits.id) FROM visits 
+                //     WHERE visits.shop_id = shops.id 
+                //     AND
+                //     visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as thisShop_last30days_visits "),
+            )
+            // ->groupBy('visits.id')
+            ->orderBy('visits.id', 'DESC')
+            ->paginate(25);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ], 200);
+       
     }
 
 
@@ -156,123 +359,146 @@ class VisitController extends Controller
 
 
 
-    public function option(Request $request)
-    {
-       // Option year
-        if ($request->has('year')) {
-            // return $request->all();
-            $startDate = date("Y-m-d", strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . "-1 year"));
-            $today = date("Y-m-d");
+    // public function option(Request $request)
+    // {
+    //     // Option year
+    //     if ($request->has('year')) {
+    //         // return $request->all();
+    //         $startDate = date("Y-m-d", strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . "-1 year"));
+    //         $today = date("Y-m-d");
 
-            $data = DB::table("visits")
-            ->join('users', 'users.id', 'visits.user_id')
-            ->join('shops', 'shops.id', 'visits.shop_id')
-            ->whereBetween('visits.created_at', [ $startDate . " 00:00:00"  , $today . " 23:59:59"])
-            ->select(
-                'visits.id as visit_id',
-                'visits.remarks as remarks',
-                'visits.image as visit_image',
-                'visits.created_at as visit_dateTime',
-                'visits.user_id as employee_id',
-                'users.name as employee_name',
-                'users.image as employee_image',
-                'shops.id as shop_id',
-                'shops.name as shop_name',
-                'shops.address as shop_address',
-            )
-            ->groupBy('visits.id')
-            ->orderBy('visits.id', 'DESC')
-            ->paginate(25);
-        }
+    //         $data = DB::table("visits")
+    //         ->join('users', 'users.id', 'visits.user_id')
+    //         ->join('shops', 'shops.id', 'visits.shop_id')
+    //         ->whereBetween('visits.created_at', [ $startDate . " 00:00:00"  , $today . " 23:59:59"])
+    //         ->select(
+    //             'visits.id as visit_id',
+    //             'visits.remarks as remarks',
+    //             'visits.image as visit_image',
+    //             'visits.created_at as visit_dateTime',
+    //             'visits.user_id as employee_id',
+    //             'users.name as employee_name',
+    //             'users.image as employee_image',
+    //             'shops.id as shop_id',
+    //             'shops.name as shop_name',
+    //             'shops.address as shop_address',
+    //         )
+    //         ->groupBy('visits.id')
+    //         ->orderBy('visits.id', 'DESC')
+    //         ->paginate(25);
+    //     }
 
-        // Option month
-        else if ($request->has('month') ) {
-            // return $request->all();
-            if (empty($request->year)) {
-                $year = date("Y");
-            }else {
-                $year = $request->year;
-            }
-            $month = $request->month;
-            $date = $year.'-'.$month.'-01';
-            // $today = '2022-10-28';
-            $today = date("Y-m-d"); // 2022-11-02 default
+    //     // Option month
+    //     else if ($request->has('month') ) {
+    //         // return $request->all();
+    //         if (empty($request->year)) {
+    //             $year = date("Y");
+    //         }else {
+    //             $year = $request->year;
+    //         }
+    //         $month = $request->month;
+    //         $date = $year.'-'.$month.'-01';
+    //         // $today = '2022-10-28';
+    //         $today = date("Y-m-d"); // 2022-11-02 default
 
-            $data = DB::table("visits")
-            ->join('users', 'users.id', 'visits.user_id')
-            ->join('shops', 'shops.id', 'visits.shop_id')
-            ->whereBetween('visits.created_at', [ $date . " 00:00:00"  , $today . " 23:59:59"])
-            ->select(
-                'visits.id as visit_id',
-                'visits.remarks as remarks',
-                'visits.image as visit_image',
-                'visits.created_at as visit_dateTime',
-                'visits.user_id as employee_id',
-                'users.name as employee_name',
-                'users.image as employee_image',
-                'shops.id as shop_id',
-                'shops.name as shop_name',
-                'shops.address as shop_address',
-            )
-            ->groupBy('visits.id')
-            ->orderBy('visits.id', 'DESC')
-            ->paginate(25);
-        }
+    //         $data = DB::table("visits")
+    //         ->join('users', 'users.id', 'visits.user_id')
+    //         ->join('shops', 'shops.id', 'visits.shop_id')
+    //         ->whereBetween('visits.created_at', [ $date . " 00:00:00"  , $today . " 23:59:59"])
+    //         ->select(
+    //             'visits.id as visit_id',
+    //             'visits.remarks as remarks',
+    //             'visits.image as visit_image',
+    //             'visits.created_at as visit_dateTime',
+    //             'visits.user_id as employee_id',
+    //             'users.name as employee_name',
+    //             'users.image as employee_image',
+    //             'shops.id as shop_id',
+    //             'shops.name as shop_name',
+    //             'shops.address as shop_address',
+    //         )
+    //         ->groupBy('visits.id')
+    //         ->orderBy('visits.id', 'DESC')
+    //         ->paginate(25);
+    //     }
 
-        // Option user_id
-        else if ($request->has('user_id')) {
-            // return $request->all();
-            $data = DB::table("visits")
-            ->join('users', 'users.id', 'visits.user_id')
-            ->join('shops', 'shops.id', 'visits.shop_id')
-            ->where('visits.user_id', $request->user_id)
-            ->select(
-                'visits.id as visit_id',
-                'visits.remarks as remarks',
-                'visits.image as visit_image',
-                'visits.created_at as visit_dateTime',
-                'visits.user_id as employee_id',
-                'users.name as employee_name',
-                'users.image as employee_image',
-                'shops.id as shop_id',
-                'shops.name as shop_name',
-                'shops.address as shop_address',
-            )
-            // ->groupBy('visits.id')
-            ->orderBy('visits.id', 'DESC')
-            ->paginate(25);
-        }
+    //     // Option user_id
+    //     else if ($request->has('user_id')) {
+    //         // return $request->all();
+    //         $data = DB::table("visits")
+    //         ->join('users', 'users.id', 'visits.user_id')
+    //         ->join('shops', 'shops.id', 'visits.shop_id')
+    //         ->where('visits.user_id', $request->user_id)
+    //         ->select(
+    //             'visits.id as visit_id',
+    //             'visits.remarks as remarks',
+    //             'visits.image as visit_image',
+    //             'visits.created_at as visit_dateTime',
+    //             'visits.user_id as employee_id',
+    //             'users.name as employee_name',
+    //             'users.image as employee_image',
+    //             'shops.id as shop_id',
+    //             'shops.name as shop_name',
+    //             'shops.address as shop_address',
+    //         )
+    //         // ->groupBy('visits.id')
+    //         ->orderBy('visits.id', 'DESC')
+    //         ->paginate(25);
+    //     }
 
-        // return 'All';
-        else {
-            $data = DB::table("visits")
-            ->join('users', 'users.id', 'visits.user_id')
-            ->join('shops', 'shops.id', 'visits.shop_id')
-            ->select(
-                'visits.id as visit_id',
-                'visits.remarks as remarks',
-                'visits.image as visit_image',
-                'visits.created_at as visit_dateTime',
-                'visits.user_id as employee_id',
-                'users.name as employee_name',
-                'users.image as employee_image',
-                'shops.id as shop_id',
-                'shops.name as shop_name',
-                'shops.address as shop_address',
-                // DB::raw("(
-                //     SELECT COUNT(visits.id) FROM visits 
-                //     WHERE visits.shop_id = shops.id 
-                //     AND
-                //     visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as thisShop_last30days_visits "),
-            )
-            // ->groupBy('visits.id')
-            ->orderBy('visits.id', 'DESC')
-            ->paginate(25);
-        }
+    //     // return 'All';
+    //     else {
+    //         $data = DB::table("visits")
+    //         ->join('users', 'users.id', 'visits.user_id')
+    //         ->join('shops', 'shops.id', 'visits.shop_id')
+    //         ->select(
+    //             'visits.id as visit_id',
+    //             'visits.remarks as remarks',
+    //             'visits.image as visit_image',
+    //             'visits.created_at as visit_dateTime',
+    //             'visits.user_id as employee_id',
+    //             'users.name as employee_name',
+    //             'users.image as employee_image',
+    //             'shops.id as shop_id',
+    //             'shops.name as shop_name',
+    //             'shops.address as shop_address',
+    //             // DB::raw("(
+    //             //     SELECT COUNT(visits.id) FROM visits 
+    //             //     WHERE visits.shop_id = shops.id 
+    //             //     AND
+    //             //     visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as thisShop_last30days_visits "),
+    //         )
+    //         // ->groupBy('visits.id')
+    //         ->orderBy('visits.id', 'DESC')
+    //         ->paginate(25);
+    //     }
 
-        return response()->json([
-            'success' => true,
-            'data' => $data,
-        ], 200);
-    }
+    //     return response()->json([
+    //         'success' => true,
+    //         'data' => $data,
+    //     ], 200);
+    // }
 }
+
+
+
+// public function index()
+// {
+//     // return 'uo';
+//     $data = DB::table("visits")
+//     ->join('shops', 'shops.id', 'visits.shop_id')
+//     ->select(
+//         'visits.id as id',
+//         'visits.remarks',
+//         'visits.created_at',
+//         'shops.id as shop_id',
+//         'shops.name as shop_name',
+//         'shops.address as shop_address',
+//     )
+//     ->orderBy('id', 'DESC')
+//     ->paginate(25);
+//      return response()->json([
+//          'success' => true,
+//          'data' => $data,
+//      ], 200);
+// }
