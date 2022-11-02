@@ -55,9 +55,10 @@ class VisitController extends Controller
             'visits.id as visit_id',
             'visits.remarks as remarks',
             'visits.image as visit_image',
-            'visits.user_id as user_id',
-            'users.name as user_name',
-            'users.image as user_image',
+            'visits.created_at as visit_dateTime',
+            'visits.user_id as employee_id',
+            'users.name as employee_name',
+            'users.image as employee_image',
             'shops.id as shop_id',
             'shops.name as shop_name',
             'shops.address as shop_address',
@@ -157,24 +158,89 @@ class VisitController extends Controller
 
     public function option(Request $request)
     {
-        // return $request->all();
-
-        $startDate = date("Y-m-d", strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . "-1 month"));
-        $endDate = date("Y-m-d");
-
-        // Option year
+       // Option year
         if ($request->has('year')) {
-            return $request->all();
+            // return $request->all();
+            $startDate = date("Y-m-d", strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . "-1 year"));
+            $today = date("Y-m-d");
+
+            $data = DB::table("visits")
+            ->join('users', 'users.id', 'visits.user_id')
+            ->join('shops', 'shops.id', 'visits.shop_id')
+            ->whereBetween('visits.created_at', [ $startDate . " 00:00:00"  , $today . " 23:59:59"])
+            ->select(
+                'visits.id as visit_id',
+                'visits.remarks as remarks',
+                'visits.image as visit_image',
+                'visits.created_at as visit_dateTime',
+                'visits.user_id as employee_id',
+                'users.name as employee_name',
+                'users.image as employee_image',
+                'shops.id as shop_id',
+                'shops.name as shop_name',
+                'shops.address as shop_address',
+            )
+            ->groupBy('visits.id')
+            ->orderBy('visits.id', 'DESC')
+            ->paginate(25);
         }
 
         // Option month
-        else if ($request->has('month')) {
-            return $request->all();
+        else if ($request->has('month') ) {
+            // return $request->all();
+            if (empty($request->year)) {
+                $year = date("Y");
+            }else {
+                $year = $request->year;
+            }
+            $month = $request->month;
+            $date = $year.'-'.$month.'-01';
+            // $today = '2022-10-28';
+            $today = date("Y-m-d"); // 2022-11-02 default
+
+            $data = DB::table("visits")
+            ->join('users', 'users.id', 'visits.user_id')
+            ->join('shops', 'shops.id', 'visits.shop_id')
+            ->whereBetween('visits.created_at', [ $date . " 00:00:00"  , $today . " 23:59:59"])
+            ->select(
+                'visits.id as visit_id',
+                'visits.remarks as remarks',
+                'visits.image as visit_image',
+                'visits.created_at as visit_dateTime',
+                'visits.user_id as employee_id',
+                'users.name as employee_name',
+                'users.image as employee_image',
+                'shops.id as shop_id',
+                'shops.name as shop_name',
+                'shops.address as shop_address',
+            )
+            ->groupBy('visits.id')
+            ->orderBy('visits.id', 'DESC')
+            ->paginate(25);
         }
 
         // Option user_id
         else if ($request->has('user_id')) {
-            return $request->all();
+            // return $request->all();
+            $data = DB::table("visits")
+            ->join('users', 'users.id', 'visits.user_id')
+            ->join('shops', 'shops.id', 'visits.shop_id')
+            ->where('visits.user_id', $request->user_id)
+            ->select(
+                'visits.id as visit_id',
+                'visits.remarks as remarks',
+                'visits.image as visit_image',
+                'visits.created_at as visit_dateTime',
+                'visits.user_id as employee_id',
+                'users.name as employee_name',
+                'users.image as employee_image',
+                'shops.id as shop_id',
+                'shops.name as shop_name',
+                'shops.address as shop_address',
+            )
+            // ->groupBy('visits.id')
+            ->orderBy('visits.id', 'DESC')
+            ->paginate(25);
         }
 
         // return 'All';
@@ -186,9 +252,10 @@ class VisitController extends Controller
                 'visits.id as visit_id',
                 'visits.remarks as remarks',
                 'visits.image as visit_image',
-                'visits.user_id as user_id',
-                'users.name as user_name',
-                'users.image as user_image',
+                'visits.created_at as visit_dateTime',
+                'visits.user_id as employee_id',
+                'users.name as employee_name',
+                'users.image as employee_image',
                 'shops.id as shop_id',
                 'shops.name as shop_name',
                 'shops.address as shop_address',
