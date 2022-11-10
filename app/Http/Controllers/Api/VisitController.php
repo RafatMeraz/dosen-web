@@ -47,7 +47,32 @@ class VisitController extends Controller
                 ->groupBy('visits.id')
                 ->orderBy('visits.id', 'DESC')
                 ->paginate(25);
-            } else {
+            } if ($request->has('month')) {
+                $month = $request->month;
+                $monthStart = $year.'-'.$month.'-01';
+                $monthEnd = $year.'-'.$month.'-31';
+
+                $data = DB::table("visits")
+                ->join('users', 'users.id', 'visits.user_id')
+                ->join('shops', 'shops.id', 'visits.shop_id')
+                ->whereBetween('visits.created_at', [ $monthStart . " 00:00:00"  , $monthEnd . " 23:59:59"])
+                ->select(
+                    'visits.id as visit_id',
+                    'visits.remarks as remarks',
+                    'visits.image as visit_image',
+                    'visits.created_at as visit_dateTime',
+                    'visits.user_id as employee_id',
+                    'users.name as employee_name',
+                    'users.image as employee_image',
+                    'shops.id as shop_id',
+                    'shops.name as shop_name',
+                    'shops.address as shop_address',
+                )
+                ->groupBy('visits.id')
+                ->orderBy('visits.id', 'DESC')
+                ->paginate(25);
+            }
+            else {
                 $data = DB::table("visits")
                 ->join('users', 'users.id', 'visits.user_id')
                 ->join('shops', 'shops.id', 'visits.shop_id')
@@ -303,8 +328,24 @@ class VisitController extends Controller
             $image = '';
             try {
                 $image = $request->file('image')->storeAs(
-                    'public/visits', Str::random(20).'.'.$request->file('image')->getClientOriginalExtension()
+                    'public/visits', Str::random(5).'-'.time().'-'.Str::random(5).'.'.$request->file('image')->getClientOriginalExtension()
                 );
+
+                $image = explode("public/",$image);
+
+                $visits = Visit::create([
+                    'user_id'=> auth()->id(),
+                    'shop_id'=> $request->shop_id,
+                    'remarks'=> $request->remarks,
+                    'image'=> $image[1]
+                ]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Visit Store Succesfully!',
+                    'data' => $visits
+                ], 200);
+
             } catch (\Throwable $th) {
                 Log::error($th->getMessage());
                 return response()->json([
@@ -312,27 +353,6 @@ class VisitController extends Controller
                     'message' => 'Visit image Failed!',
                 ], 400);
             }
-            $image = explode("public/",$image);
-            try {
-                $visits = Visit::create([
-                    'user_id'=> auth()->id(),
-                    'shop_id'=> $request->shop_id,
-                    'remarks'=> $request->remarks,
-                    'image'=> $image[1]
-                ]);
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Visit Store Succesfully!',
-                    'data' => $visits
-                ], 200);
-            } catch (\Throwable $th) {
-                Log::error($th->getMessage());
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Visit Store Failed!',
-                ], 400);
-            }
-
         }
 
             try {
@@ -351,7 +371,7 @@ class VisitController extends Controller
                 Log::error($th->getMessage());
                 return response()->json([
                     'success' => false,
-                    'message' => 'User Registration Failed!', error($th->getMessage()),
+                    'message' => 'Visit Store Failed!', error($th->getMessage()),
                 ], 400);
             }
         // }
@@ -478,7 +498,102 @@ class VisitController extends Controller
     //         'data' => $data,
     //     ], 200);
     // }
+
+
+
+
+    public function summary($id = NULL)
+    {
+
+        // $todayDate = '2022-11-10' > $thisMonth = '2022-11-01'
+        
+        // $todayDate = '2022-11-10';
+        $thisMonth = '2022-11-01';
+        // return $id;
+        $today = date("Y-m-d");
+        // $today = date("Y-m-d")." 00:00:00" ;
+        // $todayDate = date("d");
+        // $thisMonth = date("Y-m-d", strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . "-$todayDate day"));
+
+        // $startDate = date("Y-m-d");
+        // return $thisMonth = $today - $startDate;
+
+        // $monthStart = $year.'-'.$month.'-01';
+        // $monthEnd = $year.'-'.$month.'-31';
+
+        if( auth()->user()->role == 'manager' ) {
+            // return 'manager';
+            $data = DB::table("visits")
+            ->join('users', 'users.id', 'visits.user_id')
+            // ->join('shops', 'shops.id', 'visits.shop_id')
+            // ->where('visits.id', $id)
+            ->select( 
+                // 'visits.id as visit_id',
+                DB::raw("(
+                    SELECT COUNT(visits.id) FROM visits 
+                    WHERE
+                    visits.created_at >= '$thisMonth  . 00:00:00' AND visits.created_at <=  '$today . 23:59:59')
+                    as monthAllEmployeeVisits " 
+                ),
+                DB::raw("(
+                    SELECT COUNT(visits.id) FROM visits 
+                    WHERE
+                    visits.created_at >= '$today')
+                    as todayAllEmployeeVisits " 
+                ),
+            )
+            // ->groupBy('visits.id')
+            // ->groupBy('visits.user_id')
+            // ->groupBy('users.id')
+            ->take(1)
+            ->get();
+
+        } else {
+            // return 'not manager';
+            $id = auth()->id();
+            return $data = DB::table("visits")
+            ->join('users', 'users.id', 'visits.user_id')
+            // ->join('shops', 'shops.id', 'visits.shop_id')
+            // ->where('visits.user_id', auth()->id())
+            ->select( 
+                // 'visits.id as visit_id',
+                DB::raw("(
+                    SELECT COUNT(visits.id) FROM visits 
+                    WHERE
+                    visits.user_id = $id
+                    AND
+                    visits.created_at >= '$thisMonth  . 00:00:00' 
+                    AND 
+                    visits.created_at <=  '$today . 23:59:59' )
+                    as monthVisits " 
+                ),
+                DB::raw("(
+                    SELECT COUNT(visits.id) FROM visits 
+                    WHERE
+                    visits.user_id = $id
+                    AND
+                    visits.created_at >= '$today')
+                    as todayVisits " 
+                ),
+            )
+            // ->groupBy('visits.id')
+            // ->groupBy('visits.user_id')
+            ->groupBy('users.id')
+            // ->take(1)
+            ->get();
+        }
+    
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ], 200);
+    }
 }
+
+
+
+
+
 
 
 

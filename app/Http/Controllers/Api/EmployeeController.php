@@ -21,33 +21,30 @@ class EmployeeController extends Controller
         //     ->whereBetween('created_at', [$startDate . " 00:00:00", $endDate . " 23:59:59"])
         //     ->get());
 
-
         $startDate = date("Y-m-d", strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . "-1 month"));
         $endDate = date("Y-m-d");
 
-        $data = DB::table("users")
-        ->leftJoin('visits', 'visits.user_id', 'users.id')
-        ->select( 
-            'users.id as employee_id', 
-            'users.name as employee_name', 
-            'users.designation as designation',
-            'users.role',
-            'users.phone',
-            'users.division_id',
-            'users.created_at as created_at',
-            DB::raw("count(visits.id) as total_visits"),
-            DB::raw("(
-                    SELECT COUNT(visits.id) FROM visits 
-                    WHERE visits.user_id = users.id AND
-                    visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as last30daysVisits ")
-        )
-        ->groupBy('users.id')
-        ->paginate(25);
-        // ->get();
-
          return response()->json([
              'success' => true,
-             'data' => $data,
+             'data' => DB::table("users")
+             ->leftJoin('visits', 'visits.user_id', 'users.id')
+             ->select( 
+                 'users.id as employee_id', 
+                 'users.name as employee_name', 
+                 'users.image as employee_image', 
+                 'users.designation as designation',
+                 'users.role',
+                 'users.phone',
+                 'users.division_id',
+                 'users.created_at as created_at',
+                 DB::raw("count(visits.id) as total_visits"),
+                 DB::raw("(
+                         SELECT COUNT(visits.id) FROM visits 
+                         WHERE visits.user_id = users.id AND
+                         visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as last30daysVisits ")
+             )
+             ->groupBy('users.id')
+             ->paginate(25),
          ], 200);
     }
 
@@ -63,6 +60,7 @@ class EmployeeController extends Controller
         ->select( 
             'users.id as employee_id', 
             'users.name as employee_name', 
+            'users.image as employee_image', 
             'users.designation as designation',
             'users.role',
             'users.phone',

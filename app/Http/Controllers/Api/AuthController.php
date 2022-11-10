@@ -36,8 +36,22 @@ class AuthController extends Controller
             $image = '';
             try {
                 $image = $request->file('image')->storeAs(
-                    'public/image', Str::random(56).'.'.$request->file('image')->getClientOriginalExtension()
+                    'public/image', Str::random(5).'-'.time().'-'.Str::random(5).'.'.$request->file('image')->getClientOriginalExtension()
                 );
+                $image = explode("public/",$image);
+                // $image = implode("storage/",$image);
+ 
+                $user = User::create([
+                        'name'=> $request->name,
+                        'phone'=> $request->phone,
+                        'email'=> $request->email,
+                        'role'=> $request->role,
+                        'designation'=> $request->designation,
+                        'password'=> Hash::make($request->password),
+                        // 'image'=> $image,
+                        'image'=> $image[1],
+                        'division_id'=> $request->division_id,
+                ]);
             } catch (\Throwable $th) {
                 Log::error($th->getMessage());
                 return response()->json([
@@ -45,18 +59,7 @@ class AuthController extends Controller
                     'message' => 'Image Failed!',
                 ], 400);
             }
-            // $image = explode("public/",$image);
- 
-            $user = User::create([
-                    'name'=> $request->name,
-                    'phone'=> $request->phone,
-                    'email'=> $request->email,
-                    'role'=> $request->role,
-                    'designation'=> $request->designation,
-                    'password'=> Hash::make($request->password),
-                    'image'=> $image[1],
-                    'division_id'=> $request->division_id,
-            ]);
+        
         } else {
                 $user = User::create([
                     'name'=> $request->name,
