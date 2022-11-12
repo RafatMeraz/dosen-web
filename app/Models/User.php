@@ -35,9 +35,15 @@ class User extends Authenticatable
         return $this->hasMany(Visit::class);
     }
 
+
     public function division()
     {
         return $this->belongsTo(Division::class);
+    }
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
     }
 
     /**

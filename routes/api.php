@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\DivisionController;
 use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\VisitController;
+use App\Http\Controllers\Api\ExpenseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,13 @@ Route::group(['middleware' => ['auth:sanctum','block']], function() {
     Route::get('/divisions', [DivisionController::class, 'index']);
     Route::post('/division-store', [DivisionController::class, 'store']);
 
+
+    //Expense
+    Route::get('/expense', [ExpenseController::class, 'index']);
+    Route::post('/expense-store', [ExpenseController::class, 'store']);
+    Route::post('/expense-status', [ExpenseController::class, 'status']);
+    Route::get('/expense-pending-list', [ExpenseController::class, 'pendingList']);
+    Route::get('/expense-pending-count', [ExpenseController::class, 'pendingCount']);
 
     //Shop
     Route::get('/shops', [ShopController::class, 'index']);

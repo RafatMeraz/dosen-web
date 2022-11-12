@@ -37,6 +37,7 @@ class EmployeeController extends Controller
                  'users.phone',
                  'users.division_id',
                  'users.created_at as created_at',
+                 'users.block as block',
                  DB::raw("count(visits.id) as total_visits"),
                  DB::raw("(
                          SELECT COUNT(visits.id) FROM visits 
@@ -66,6 +67,7 @@ class EmployeeController extends Controller
             'users.phone',
             'users.division_id',
             'users.created_at as created_at',
+            'users.block as block',
             DB::raw("count(visits.id) as total_visits"),
             DB::raw("(
                     SELECT COUNT(visits.id) FROM visits 
@@ -110,7 +112,13 @@ class EmployeeController extends Controller
         try {
             $user = User::find($id);
             // dd($user);
-            $user->block = 1;
+
+            if($user->block == 1) {
+                $user->block = 0;
+            }else {
+                $user->block = 1;
+            }
+
             $user->save();
             // User::find($id)->update(['block' === '1' ]);
 
