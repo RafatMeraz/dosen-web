@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\DivisionController;
 use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\VisitController;
 use App\Http\Controllers\Api\ExpenseController;
+use App\Http\Controllers\Api\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,11 @@ Route::group(['middleware' => ['auth:sanctum','block']], function() {
     //Shop
     Route::get('/shops', [ShopController::class, 'index']);
     Route::post('/shop-store', [ShopController::class, 'store']);
+
+
+    //Report
+    Route::get('/single-report', [ReportController::class, 'index']);
+    // Route::post('/shop-store', [ReportController::class, 'store']);
 
     // Logout
     Route::post('/logout', [AuthController::class, 'logout']);

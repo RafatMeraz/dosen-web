@@ -28,6 +28,7 @@ class EmployeeController extends Controller
              'success' => true,
              'data' => DB::table("users")
              ->leftJoin('visits', 'visits.user_id', 'users.id')
+             ->leftJoin('divisions', 'divisions.id', 'users.division_id')
              ->select( 
                  'users.id as employee_id', 
                  'users.name as employee_name', 
@@ -36,6 +37,7 @@ class EmployeeController extends Controller
                  'users.role',
                  'users.phone',
                  'users.division_id',
+                 'divisions.name as division_name',
                  'users.created_at as created_at',
                  'users.block as block',
                  DB::raw("count(visits.id) as total_visits"),
@@ -58,6 +60,7 @@ class EmployeeController extends Controller
         
         $data = DB::table("users")
         ->leftJoin('visits', 'visits.user_id', 'users.id')
+        ->leftJoin('divisions', 'divisions.id', 'users.division_id')
         ->select( 
             'users.id as employee_id', 
             'users.name as employee_name', 
@@ -66,6 +69,7 @@ class EmployeeController extends Controller
             'users.role',
             'users.phone',
             'users.division_id',
+            'divisions.name as division_name',
             'users.created_at as created_at',
             'users.block as block',
             DB::raw("count(visits.id) as total_visits"),
@@ -118,10 +122,7 @@ class EmployeeController extends Controller
             }else {
                 $user->block = 1;
             }
-
             $user->save();
-            // User::find($id)->update(['block' === '1' ]);
-
             return response()->json([
                 'success' => true,
                 'message' => 'Blocked!',
