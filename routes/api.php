@@ -63,6 +63,9 @@ Route::group(['middleware' => ['auth:sanctum','block']], function() {
     Route::get('/single-report', [ReportController::class, 'index']);
     // Route::post('/shop-store', [ReportController::class, 'store']);
 
+
+    Route::get('/download-chart', [ChartController::class, 'chartPdf']);
+
     // Logout
     Route::post('/logout', [AuthController::class, 'logout']);
   });
@@ -72,4 +75,3 @@ Route::group(['middleware' => ['auth:sanctum','block']], function() {
 // });
 
 
-    Route::get('/download-chart', [ChartController::class, 'chartPdf']);
