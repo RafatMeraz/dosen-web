@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\api\ChartController;
 use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\DivisionController;
 use App\Http\Controllers\Api\EmployeeController;
@@ -69,3 +70,6 @@ Route::group(['middleware' => ['auth:sanctum','block']], function() {
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
+
+    Route::get('/download-chart', [ChartController::class, 'chartPdf']);

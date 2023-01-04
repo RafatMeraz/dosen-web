@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/pdf', [Controller::class, 'pdf'])->name('pdf');
+Route::post('/pdf/download', [Controller::class, 'downloadPdf'])->name('downloadPdf');
