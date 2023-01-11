@@ -17,5 +17,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/pdf', [Controller::class, 'pdf'])->name('pdf');
-Route::post('/pdf/download', [Controller::class, 'downloadPdf'])->name('downloadPdf');
+// Route::get('/pdf', [Controller::class, 'pdf'])->name('pdf');
