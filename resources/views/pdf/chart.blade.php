@@ -73,7 +73,7 @@
         <thead>
             <tr>
                 <th style="text-align: left; width: 30%;">Shop</th>
-                <th style="width: 10%;">Counter</th>
+                <th style="width: 10%;">Total Visits</th>
             </tr>
         </thead>
         <tbody>

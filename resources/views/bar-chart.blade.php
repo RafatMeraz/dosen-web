@@ -15,6 +15,7 @@
         border: 1px solid grey;
         font-size: 12pt;
         border-collapse: collapse;
+        width: 100%;
     }
 
     table thead th,
@@ -68,22 +69,34 @@
 </style>
 
 <body>
-    <table>
-        <thead>
-            <tr>
-                <th style="text-align: left; width: 30%;">Shop</th>
-                <th style="width: 10%;">Counter</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($dataSet as $data)
+    <div style="width: 100%; text-align: center;">
+        <h3 style="margin-bottom: 7px;">Shop Visits Report</h3>
+        <p style="margin-top: 0px;">{{ $date }}</p>
+    </div>
+    <br>
+
+    @foreach ($allData as $data)
+        <table>
+            <thead>
                 <tr>
-                    <th style="text-align: left; width: 30%; font-weight: normal;">{{ $data[0] }}</th>
-                    <th style="width: 10%; font-weight: normal;">{{ $data[1] }}</th>
+                    <td colspan="2"><b>User: </b> {{ $data['user']->name }}</td>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+                <tr>
+                    <th style="text-align: left; width: 30%;">Shop</th>
+                    <th style="width: 10%;">Total Visits</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($data['dataSet'] as $sData)
+                    <tr>
+                        <th style="text-align: left; width: 30%; font-weight: normal;">{{ $sData[0] }}</th>
+                        <th style="width: 10%; font-weight: normal;">{{ $sData[1] }}</th>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <br>
+    @endforeach
 </body>
 
 </html>
