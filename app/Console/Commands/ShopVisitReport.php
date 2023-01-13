@@ -1,20 +1,38 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Console\Commands;
 
 use PDF;
 use Carbon\Carbon;
 use App\Models\Shop;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
-class TestController extends Controller
+class ShopVisitReport extends Command
 {
-    public function pdf(Request $request)
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'shop:visit_report';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Shop visits report';
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
     {
         $year = Carbon::now()->format('Y');
         $month = Carbon::now()->format('m');
@@ -52,17 +70,22 @@ class TestController extends Controller
 
         $pdf = PDF::loadView('bar-chart', compact('allData','date'));
 
-        $title = ''.Carbon::now()->format('F').', '.Carbon::now()->format('Y').'';
+        $title = ''.Carbon::now()->format('F').'_'.Carbon::now()->format('Y').'';
 
         $content = $pdf->download()->getOriginalContent();
         Storage::put('public/pdf/shop_visits_'.$title.'.pdf',$content);
 
         $file_link = url('/') . '/storage/pdf/shop_visits_'.$title.'.pdf';
 
-        // return $pdf->download('Shop Visits.pdf');
-        // $content = $pdf->download()->getOriginalContent();
-        // Storage::put('public/pdf/shop_visits.pdf',$content);
+        $mailData['email'] = 'shamirabdin@gmail.com';
+        $mailData['file'] = $file_link;
+        $mailData['date'] = $date;
 
-        return view('bar-chart', compact('allData','date'));
+        Mail::send('emails.shop-visit-report', $mailData, function ($message) use ($mailData) {
+            $message->to($mailData['email'])
+                ->subject('Shop visit Report');
+        });
+
+        $this->info('success');
     }
 }
