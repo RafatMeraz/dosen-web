@@ -80,10 +80,11 @@ class ShopVisitReport extends Command
         $mailData['email'] = 'shamirabdin@gmail.com';
         $mailData['file'] = $file_link;
         $mailData['date'] = $date;
+        $mailData['title'] = 'Monthly report for Dosen Visits - '.$date;
 
         Mail::send('emails.shop-visit-report', $mailData, function ($message) use ($mailData) {
             $message->to($mailData['email'])
-                ->subject('Shop visit Report');
+                ->subject($mailData['title']);
         });
 
         $this->info('success');
