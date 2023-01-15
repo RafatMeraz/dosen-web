@@ -25,10 +25,10 @@ class ExpenseController extends Controller
     //     // $monthEnd = $year.'-'.$month.'-31';
 
     //     if( auth()->user()->role == 'manager' )  // manager
-    //     {  
+    //     {
     //         if ($request->has('user_id'))
     //         {
-    //             if ($request->has('month')) 
+    //             if ($request->has('month'))
     //             {
     //                 $data = DB::table("expenses")
     //                 ->join('users', 'users.id', 'expenses.user_id')
@@ -48,7 +48,7 @@ class ExpenseController extends Controller
     //                 ->orderBy('expenses.id', 'DESC')
     //                 ->paginate(25);
     //             }
-    //             if ($request->has('year')) 
+    //             if ($request->has('year'))
     //             {
     //                 $data = DB::table("expenses")
     //                 ->join('users', 'users.id', 'expenses.user_id')
@@ -69,8 +69,8 @@ class ExpenseController extends Controller
     //                 )
     //                 ->orderBy('expenses.id', 'DESC')
     //                 ->paginate(25);
-    //             }  
-    //             else 
+    //             }
+    //             else
     //             {
     //                 $data = DB::table("expenses")
     //                 ->join('users', 'users.id', 'expenses.user_id')
@@ -90,7 +90,7 @@ class ExpenseController extends Controller
     //                 ->paginate(25);
     //             }
     //         }
-    //         else if ($request->has('month')) 
+    //         else if ($request->has('month'))
     //         {
     //             if ($request->has('user_id'))
     //             {
@@ -156,9 +156,9 @@ class ExpenseController extends Controller
     //                 )
     //                 ->orderBy('expenses.id', 'DESC')
     //                 ->paginate(25);
-    //             }  
+    //             }
     //         }
-    //         else if ($request->has('year')) 
+    //         else if ($request->has('year'))
     //         {
     //             if ($request->has('user_id'))
     //             {
@@ -182,7 +182,7 @@ class ExpenseController extends Controller
     //                 ->orderBy('expenses.id', 'DESC')
     //                 ->paginate(25);
     //             }
-    //             if ($request->has('month')) 
+    //             if ($request->has('month'))
     //             {
     //                 $data = DB::table("expenses")
     //                 ->join('users', 'users.id', 'expenses.user_id')
@@ -203,7 +203,7 @@ class ExpenseController extends Controller
     //                 ->orderBy('expenses.id', 'DESC')
     //                 ->paginate(25);
     //             }
-    //             else 
+    //             else
     //             {
     //                 $data = DB::table("expenses")
     //                 ->join('users', 'users.id', 'expenses.user_id')
@@ -225,7 +225,7 @@ class ExpenseController extends Controller
     //                 ->paginate(25);
     //             }
     //         }
-    //         else 
+    //         else
     //         {
     //             $data = DB::table("expenses")
     //             ->join('users', 'users.id', 'expenses.user_id')
@@ -244,7 +244,7 @@ class ExpenseController extends Controller
     //             ->orderBy('expenses.id', 'DESC')
     //             ->paginate(25);
     //         }
-    //     } 
+    //     }
     //     else   // user
     //     {
     //         $data = DB::table("expenses")
@@ -275,14 +275,14 @@ class ExpenseController extends Controller
     // public function index(Request $request)
     // {
     //     if( auth()->user()->role == 'manager' )  // manager
-    //     {  
-    //         if ($request->has('year')) 
+    //     {
+    //         if ($request->has('year'))
     //         {
     //             $year = $request->year;
     //             $yearStart = $year.'-01-01';
     //             $yearEnd = $year.'-12-31';
 
-    //             if ($request->has('user_id')) 
+    //             if ($request->has('user_id'))
     //             {
     //                 $data = DB::table("expenses")
     //                 ->join('users', 'users.id', 'expenses.user_id')
@@ -301,8 +301,8 @@ class ExpenseController extends Controller
     //                 ->orderBy('expenses.id', 'DESC')
     //                 ->paginate(25);
 
-    //             } 
-    //             if ($request->has('month')) 
+    //             }
+    //             if ($request->has('month'))
     //             {
     //                 $month = $request->month;
     //                 $monthStart = $year.'-'.$month.'-01';
@@ -343,7 +343,7 @@ class ExpenseController extends Controller
     //             }
     //         }
 
-    //         else if ($request->has('month') ) 
+    //         else if ($request->has('month') )
     //         {
     //             $year = $request->has('year') ? $request->year : date("Y");
     //             $yearStart = $year.'-01-01';
@@ -353,7 +353,7 @@ class ExpenseController extends Controller
     //             $monthStart = $year.'-'.$month.'-01';
     //             $monthEnd = $year.'-'.$month.'-31';
 
-    //             if ($request->has('user_id')) 
+    //             if ($request->has('user_id'))
     //             {
     //                 $data = DB::table("expenses")
     //                 ->join('users', 'users.id', 'expenses.user_id')
@@ -371,8 +371,8 @@ class ExpenseController extends Controller
     //                         'expenses.created_at as date')
     //                 ->orderBy('expenses.id', 'DESC')
     //                 ->paginate(25);
-    //             } 
-    //             else 
+    //             }
+    //             else
     //             {
     //                 $data = DB::table("expenses")
     //                 ->join('users', 'users.id', 'expenses.user_id')
@@ -392,10 +392,10 @@ class ExpenseController extends Controller
     //             }
     //         }
 
-    //         else if ($request->has('user_id')) 
+    //         else if ($request->has('user_id'))
     //         {
     //             // return $request->all();
-    //             if ($request->has('month') ) 
+    //             if ($request->has('month') )
     //             {
     //                 $year = $request->has('year') ? $request->year : date("Y");
     //                 $yearStart = $year.'-01-01';
@@ -404,7 +404,7 @@ class ExpenseController extends Controller
     //                 $month = $request->has('month') ? $request->month : date("m");
     //                 $monthStart = $year.'-'.$month.'-01';
     //                 $monthEnd = $year.'-'.$month.'-31';
-                
+
     //                 $data = DB::table("expenses")
     //                 ->join('users', 'users.id', 'expenses.user_id')
     //                 ->where('expenses.user_id', $request->user_id)
@@ -423,7 +423,7 @@ class ExpenseController extends Controller
     //                 ->paginate(25);
 
     //             }
-    //             else if ($request->has('year')) 
+    //             else if ($request->has('year'))
     //             {
     //                 $year = $request->year;
     //                 $yearStart = $year.'-01-01';
@@ -445,7 +445,7 @@ class ExpenseController extends Controller
     //                 ->orderBy('expenses.id', 'DESC')
     //                 ->paginate(25);
     //             }
-    //             else 
+    //             else
     //             {
     //                 $data = DB::table("expenses")
     //                 ->join('users', 'users.id', 'expenses.user_id')
@@ -465,7 +465,7 @@ class ExpenseController extends Controller
     //             }
     //         }
 
-    //         else 
+    //         else
     //         {
     //             $data = DB::table("expenses")
     //                 ->join('users', 'users.id', 'expenses.user_id')
@@ -504,13 +504,13 @@ class ExpenseController extends Controller
     //         // ->groupBy('expenses.id')
     //         ->orderBy('expenses.id', 'DESC')
     //         ->paginate(25);
-    //     } 
+    //     }
 
     //     return response()->json([
     //         'success' => true,
     //         'data' => $data,
     //     ], 200);
-       
+
     // }
 
 
@@ -521,8 +521,8 @@ class ExpenseController extends Controller
         $month = $request->has('month') ? $request->month : date("m");
 
         if( auth()->user()->role == 'manager' )
-        { 
-            if ($request->has('user_id') || ($request->has('month')) || ($request->has('year')) ) 
+        {
+            if ($request->has('user_id') || ($request->has('month')) || ($request->has('year')) )
             {
                 $data = DB::table("expenses")
                 ->join('users', 'users.id', 'expenses.user_id')
@@ -545,6 +545,8 @@ class ExpenseController extends Controller
             } else {
                 $data = DB::table("expenses")
                 ->join('users', 'users.id', 'expenses.user_id')
+                ->whereMonth('expenses.created_at','=',$month )
+                ->whereYear('expenses.created_at', '=',$year)
                 ->select(
                     'expenses.id as expense_id',
                     'expenses.title as title',
@@ -559,12 +561,14 @@ class ExpenseController extends Controller
                 ->orderBy('expenses.id', 'DESC')
                 ->paginate(25);
             }
-        } 
-        else 
+        }
+        else
         {
             $data = DB::table("expenses")
             ->join('users', 'users.id', 'expenses.user_id')
-            ->where('expenses.user_id', auth()->id())
+            ->where('expenses.user_id', $user)
+            ->whereMonth('expenses.created_at','=',$month )
+            ->whereYear('expenses.created_at', '=',$year)
             ->select(
                 'expenses.id as expense_id',
                 'expenses.title as title',
