@@ -250,8 +250,8 @@ class VisitController extends Controller
                 'shops.name as shop_name',
                 'shops.address as shop_address',
                 // DB::raw("(
-                //     SELECT COUNT(visits.id) FROM visits 
-                //     WHERE visits.shop_id = shops.id 
+                //     SELECT COUNT(visits.id) FROM visits
+                //     WHERE visits.shop_id = shops.id
                 //     AND
                 //     visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as thisShop_last30days_visits "),
             )
@@ -264,7 +264,7 @@ class VisitController extends Controller
             'success' => true,
             'data' => $data,
         ], 200);
-       
+
     }
 
 
@@ -291,8 +291,8 @@ class VisitController extends Controller
             'shops.name as shop_name',
             'shops.address as shop_address',
             DB::raw("(
-                SELECT COUNT(visits.id) FROM visits 
-                WHERE visits.shop_id = shops.id 
+                SELECT COUNT(visits.id) FROM visits
+                WHERE visits.shop_id = shops.id
                 AND
                 visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as thisShop_last30days_visits "),
         )
@@ -483,8 +483,8 @@ class VisitController extends Controller
     //             'shops.name as shop_name',
     //             'shops.address as shop_address',
     //             // DB::raw("(
-    //             //     SELECT COUNT(visits.id) FROM visits 
-    //             //     WHERE visits.shop_id = shops.id 
+    //             //     SELECT COUNT(visits.id) FROM visits
+    //             //     WHERE visits.shop_id = shops.id
     //             //     AND
     //             //     visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as thisShop_last30days_visits "),
     //         )
@@ -506,7 +506,7 @@ class VisitController extends Controller
     {
 
         // $todayDate = '2022-11-10' > $thisMonth = '2022-11-01'
-        
+
         // $todayDate = '2022-11-10';
         $thisMonth = '2022-11-01';
         // return $id;
@@ -527,19 +527,19 @@ class VisitController extends Controller
             ->join('users', 'users.id', 'visits.user_id')
             // ->join('shops', 'shops.id', 'visits.shop_id')
             // ->where('visits.id', $id)
-            ->select( 
+            ->select(
                 // 'visits.id as visit_id',
                 DB::raw("(
-                    SELECT COUNT(visits.id) FROM visits 
+                    SELECT COUNT(visits.id) FROM visits
                     WHERE
                     visits.created_at >= '$thisMonth  . 00:00:00' AND visits.created_at <=  '$today . 23:59:59')
-                    as monthAllEmployeeVisits " 
+                    as monthAllEmployeeVisits "
                 ),
                 DB::raw("(
-                    SELECT COUNT(visits.id) FROM visits 
+                    SELECT COUNT(visits.id) FROM visits
                     WHERE
                     visits.created_at >= '$today')
-                    as todayAllEmployeeVisits " 
+                    as todayAllEmployeeVisits "
                 ),
             )
             // ->groupBy('visits.id')
@@ -551,29 +551,29 @@ class VisitController extends Controller
         } else {
             // return 'not manager';
             $id = auth()->id();
-            return $data = DB::table("visits")
+            $data = DB::table("visits")
             ->join('users', 'users.id', 'visits.user_id')
             // ->join('shops', 'shops.id', 'visits.shop_id')
             // ->where('visits.user_id', auth()->id())
-            ->select( 
+            ->select(
                 // 'visits.id as visit_id',
                 DB::raw("(
-                    SELECT COUNT(visits.id) FROM visits 
+                    SELECT COUNT(visits.id) FROM visits
                     WHERE
                     visits.user_id = $id
                     AND
-                    visits.created_at >= '$thisMonth  . 00:00:00' 
-                    AND 
+                    visits.created_at >= '$thisMonth  . 00:00:00'
+                    AND
                     visits.created_at <=  '$today . 23:59:59' )
-                    as monthVisits " 
+                    as monthVisits "
                 ),
                 DB::raw("(
-                    SELECT COUNT(visits.id) FROM visits 
+                    SELECT COUNT(visits.id) FROM visits
                     WHERE
                     visits.user_id = $id
                     AND
                     visits.created_at >= '$today')
-                    as todayVisits " 
+                    as todayVisits "
                 ),
             )
             // ->groupBy('visits.id')
@@ -582,7 +582,7 @@ class VisitController extends Controller
             // ->take(1)
             ->get();
         }
-    
+
         return response()->json([
             'success' => true,
             'data' => $data,
