@@ -52,8 +52,8 @@ class ShopVisitReport extends Command
                 $counter =  DB::table('visits')
                     ->where('visits.user_id', '=', $user->id)
                     ->where('visits.shop_id', '=', $shop->id)
-                    ->whereMonth('created_at', '=', $month)
-                    ->whereYear('created_at', '=', $year)
+                    ->whereMonth('created_at', $month)
+                    ->whereYear('created_at', $year)
                     ->count();
 
                 $dataSet[] = [

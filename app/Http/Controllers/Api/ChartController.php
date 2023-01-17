@@ -25,10 +25,10 @@ class ChartController extends Controller
 
             foreach ($shops as $shop) {
                 $counter =  DB::table('visits')
-                    ->where('visits.user_id', '=', $user)
-                    ->where('visits.shop_id', '=', $shop->id)
-                    ->whereMonth('created_at', '=', $month)
-                    ->whereYear('created_at', '=', $year)
+                    ->where('visits.user_id', $user)
+                    ->where('visits.shop_id', $shop->id)
+                    ->whereMonth('created_at', $month)
+                    ->whereYear('created_at', $year)
                     ->count();
 
                 $dataSet[] = [

@@ -45,7 +45,7 @@ class ReportController extends Controller
         }
 
         // return $list;
-        
+
 
         // $data = DB::table("users")
         // ->leftJoin('visits', 'visits.user_id', 'users.id')
@@ -53,11 +53,11 @@ class ReportController extends Controller
         // ->leftJoin('divisions', 'divisions.id', 'shops.division_id')
         // ->where('divisions.id' , $division_id)
         // // ->select('divisions.id')
-        // ->select( 
-        //     'users.id as employee_id', 
-        //     'users.name as employee_name', 
-        //     'shops.id as shop_name', 
-        // //     'users.image as employee_image', 
+        // ->select(
+        //     'users.id as employee_id',
+        //     'users.name as employee_name',
+        //     'shops.id as shop_name',
+        // //     'users.image as employee_image',
         // //     'users.designation as designation',
         // //     'users.role',
         // //     'users.phone',
@@ -67,7 +67,7 @@ class ReportController extends Controller
         // //     'users.block as block',
         // //      DB::raw("count(visits.id) as total_visits"),
         // //      DB::raw("(
-        // //             SELECT COUNT(visits.id) FROM visits 
+        // //             SELECT COUNT(visits.id) FROM visits
         // //             WHERE visits.user_id = users.id AND
         // //             visits.created_at >= '$monthStart .  00:00:00' AND visits.created_at <= '$monthEnd . 23:59:59' ) as last30daysVisits ")
         // )
@@ -80,6 +80,6 @@ class ReportController extends Controller
              'data' => $list,
          ], 200);
 
-        
+
     }
 }
