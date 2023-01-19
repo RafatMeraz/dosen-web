@@ -50,10 +50,13 @@ class ShopVisitReport extends Command
             $dataSet = [];
             foreach ($shops as $shop) {
                 $counter =  DB::table('visits')
+                    ->join('shops', 'visits.shop_id', 'shops.id')
+                    ->select('visits.*', 'shops.division_id as shop_division_id')
                     ->where('visits.user_id', '=', $user->id)
                     ->where('visits.shop_id', '=', $shop->id)
-                    ->whereMonth('created_at', $month)
-                    ->whereYear('created_at', $year)
+                    ->whereMonth('visits.created_at', '=', $month)
+                    ->whereYear('visits.created_at', '=', $year)
+                    ->where('shops.division_id', '=',  $user->division_id)
                     ->count();
 
                 $dataSet[] = [

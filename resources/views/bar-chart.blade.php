@@ -79,7 +79,7 @@
         <table>
             <thead>
                 <tr>
-                    <td colspan="2"><b>User: </b> {{ $data['user']->name }}</td>
+                    <td colspan="2"><b>User: </b> {{ $data['user']->name }},@if(isset($data['user']->division_id))  <b>Division:</b> {{ \DB::table('divisions')->find($data['user']->division_id)->name }} @endif </td>
                 </tr>
                 <tr>
                     <th style="text-align: left; width: 30%;">Shop</th>
