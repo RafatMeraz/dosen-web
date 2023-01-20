@@ -23,7 +23,7 @@ class VisitTableSeeder extends Seeder
             $shop_name = $faker->unique()->words($nb = 2, $asText = true);
 
             $shop = new Shop();
-            $shop->division_id = 1;
+            $shop->division_id = rand(1,2);
             $shop->name = ucwords($shop_name);
             $shop->address = $faker->address();
             $shop->save();
