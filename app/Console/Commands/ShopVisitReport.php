@@ -41,12 +41,11 @@ class ShopVisitReport extends Command
 
         $users = User::where('role', 'user')->get();
 
-        $division_id = 1;
-        $shops = Shop::select('id', 'name', 'address')->where('division_id', $division_id)->get();
-
         $allData = [];
 
         foreach ($users as $key => $user) {
+            $shops = Shop::select('id', 'name', 'address')->where('division_id', $user->division_id)->get();
+
             $dataSet = [];
             foreach ($shops as $shop) {
                 $counter =  DB::table('visits')

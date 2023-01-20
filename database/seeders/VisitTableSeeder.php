@@ -19,7 +19,7 @@ class VisitTableSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= 3; $i++) {
             $shop_name = $faker->unique()->words($nb = 2, $asText = true);
 
             $shop = new Shop();
@@ -28,7 +28,7 @@ class VisitTableSeeder extends Seeder
             $shop->address = $faker->address();
             $shop->save();
 
-            for ($j = 1; $j <= 40; $j++) {
+            for ($j = 1; $j <= 2; $j++) {
                 $shop_name = $faker->unique()->words($nb = 2, $asText = true);
 
                 $visit = new Visit();

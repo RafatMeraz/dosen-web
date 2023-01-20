@@ -20,9 +20,9 @@ class ChartController extends Controller
             $user = $request->user_id;
 
             $division_id = 1;
-            $shops = Shop::select('id', 'name', 'address')->where('division_id', $division_id)->get();
-
             $getUser = User::find($user);
+
+            $shops = Shop::select('id', 'name', 'address')->where('division_id', $getUser->division_id)->get();
 
             // dd($getUser);
 
