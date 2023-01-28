@@ -583,10 +583,25 @@ class VisitController extends Controller
             ->get();
         }
 
-        return response()->json([
-            'success' => true,
-            'data' => $data,
-        ], 200);
+
+        if (count($data) != 0) {
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ], 200);
+        }
+        else
+        {
+            $data2['todayVisits']=0;
+            $data2['monthVisits']=0;
+
+            $data[]=$data2;
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ], 200);
+
+        }
     }
 }
 
