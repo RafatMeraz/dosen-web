@@ -508,7 +508,7 @@ class VisitController extends Controller
         // $todayDate = '2022-11-10' > $thisMonth = '2022-11-01'
 
         // $todayDate = '2022-11-10';
-        $thisMonth = date('Y-m-01');;
+        $thisMonth = date('Y-m-01');
         // return $id;
         $today = date("Y-m-d");
         // $today = date("Y-m-d")." 00:00:00" ;
@@ -583,23 +583,10 @@ class VisitController extends Controller
             ->get();
         }
 
-        if (empty($data))
-        {
-            return response()->json([
-                'success' => true,
-                'dataf' => $data,
-            ], 200);
-        }
-        else
-        {
-            $data['monthVisits'] = 0;
-            $data['todayVisits'] = 0;
-            return response()->json([
-                'success' => true,
-                'data' => $data,
-            ], 200);
-        }
-
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ], 200);
     }
 }
 
