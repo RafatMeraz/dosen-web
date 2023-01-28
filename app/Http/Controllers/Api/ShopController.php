@@ -7,12 +7,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-
+use App\Models\User;
 class ShopController extends Controller
 {
     public function index()
     {
 
+        $user_id = auth()->id();
+        $user = User::find($user_id);
+        if ($user->role=='user')
+        {
+            $data = DB::table('shops')
+                ->Join('divisions', 'divisions.id', 'shops.division_id')
+                ->where('shops.division_id',$user->division_id)
+                ->select('shops.id as shop_id',
+                    'shops.name as shop_name',
+                    'shops.address as shop_address',
+                    'divisions.id as division_id',
+                    'divisions.name as division_name')
+                // ->select('shops.id', DB::raw('COUNT(*) as totalEmployee'))
+                // ->groupBy('shops.id')
+                ->get();
+        }
+        else
+        {
         $data = DB::table('shops')
         ->Join('divisions', 'divisions.id', 'shops.division_id')
         ->select('shops.id as shop_id',
@@ -23,7 +41,7 @@ class ShopController extends Controller
         // ->select('shops.id', DB::raw('COUNT(*) as totalEmployee'))
         // ->groupBy('shops.id')
         ->get();
-
+        }
         return response()->json([
             'success' => true,
             'data' => $data
