@@ -18,3 +18,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 // Route::get('/pdf', [TestController::class, 'pdf'])->name('pdf');
+Route::get('/privacy-policy', [TestController::class, 'privacy'])->name('privacy');

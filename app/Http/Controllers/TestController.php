@@ -70,4 +70,8 @@ class TestController extends Controller
 
         return view('bar-chart', compact('allData','date'));
     }
+    public function privacy()
+    {
+        return view('privacy');
+    }
 }
