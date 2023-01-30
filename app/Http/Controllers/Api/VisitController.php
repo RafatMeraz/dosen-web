@@ -533,13 +533,13 @@ class VisitController extends Controller
                     SELECT COUNT(visits.id) FROM visits
                     WHERE
                     visits.created_at >= '$thisMonth  . 00:00:00' AND visits.created_at <=  '$today . 23:59:59')
-                    as monthAllEmployeeVisits "
+                    as monthVisits "
                 ),
                 DB::raw("(
                     SELECT COUNT(visits.id) FROM visits
                     WHERE
                     visits.created_at >= '$today')
-                    as todayAllEmployeeVisits "
+                    as todayVisits "
                 ),
             )
             // ->groupBy('visits.id')
