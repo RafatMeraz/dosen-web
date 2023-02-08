@@ -603,7 +603,20 @@ class VisitController extends Controller
 
         }
     }
+
+    public function shopVisits(Request $request)
+    {
+        try {
+            $visits = Visit::where('shop_id', $request->shop_id)->get();
+            return response()->json($visits);
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return response()->json($th->getMessage());
+        }
+    }
 }
+
+
 
 
 
