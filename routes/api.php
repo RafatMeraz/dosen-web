@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\VisitController;
 use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\ReportController;
+use App\Http\Controllers\Api\GroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +68,12 @@ Route::group(['middleware' => ['auth:sanctum','block']], function() {
 
 
     Route::get('/download-chart', [ChartController::class, 'chartPdf']);
+
+
+    //group
+    Route::post('/group', [GroupController::class, 'store']);
+
+
 
     // Logout
     Route::post('/logout', [AuthController::class, 'logout']);
