@@ -22,13 +22,13 @@ return new class extends Migration
             $table->unsignedInteger('updated_by')->nullable()->default(null);
             $table->timestamps();
 
-            $table->foreign('group_id')
-                ->references('id')
-                ->on('groups');
-
-            $table->foreign('division_id')
-                ->references('id')
-                ->on('divisions');
+//            $table->foreign('group_id')
+//                ->references('id')
+//                ->on('groups');
+//
+//            $table->foreign('division_id')
+//                ->references('id')
+//                ->on('divisions');
 
         });
     }
