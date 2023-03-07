@@ -74,4 +74,23 @@ class ShopController extends Controller
             ], 400);
         }
     }
+
+    public function delete($id)
+    {
+        try {
+            $shop = Shop::find($id);
+            $shop->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Shop Deleted!',
+            ], 200);
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Shop Deleted Failed!',
+            ], 400);
+        }
+    }
 }

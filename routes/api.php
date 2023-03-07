@@ -48,6 +48,8 @@ Route::group(['middleware' => ['auth:sanctum','block']], function() {
     //Division
     Route::get('/divisions', [DivisionController::class, 'index']);
     Route::post('/division-store', [DivisionController::class, 'store']);
+    Route::post('/division/delete/{id?}', [DivisionController::class, 'delete']);
+
 
 
     //Expense
@@ -60,6 +62,8 @@ Route::group(['middleware' => ['auth:sanctum','block']], function() {
     //Shop
     Route::get('/shops', [ShopController::class, 'index']);
     Route::post('/shop-store', [ShopController::class, 'store']);
+    Route::post('/shop/delete/{id?}', [ShopController::class, 'delete']);
+
 
 
     //Report
@@ -71,8 +75,8 @@ Route::group(['middleware' => ['auth:sanctum','block']], function() {
 
 
     //group
-    Route::get('/group-list', [GroupController::class, 'list']);
-    Route::post('/group-create', [GroupController::class, 'store']);
+    //Route::get('/group-list', [GroupController::class, 'list']);
+    //Route::post('/group-create', [GroupController::class, 'store']);
 
 
 

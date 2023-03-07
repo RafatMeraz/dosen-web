@@ -298,6 +298,8 @@ class VisitController extends Controller
         )
         ->groupBy('visits.id')
         ->get();
+        $data[0]->visit_dateTime = date('D, d F Y h:i:s a', strtotime($data[0]->visit_dateTime));
+        //return response()->json($data);
         return response()->json([
             'success' => true,
             'data' => $data,
@@ -357,7 +359,7 @@ class VisitController extends Controller
 
             try {
                 $visits = Visit::create([
-                    'user_id'=> auth()->user()->id(),
+                    'user_id'=> auth()->id(),
                     'shop_id'=> $request->shop_id,
                     'remarks'=> $request->remarks,
                     'image'=> NULL

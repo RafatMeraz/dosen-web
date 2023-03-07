@@ -54,4 +54,23 @@ class DivisionController extends Controller
             ], 400);
         }
     }
+
+    public function delete($id)
+    {
+        try {
+            $division = Division::find($id);
+            $division->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Division Deleted!',
+            ], 200);
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Division Deleted Failed!',
+            ], 400);
+        }
+    }
 }
