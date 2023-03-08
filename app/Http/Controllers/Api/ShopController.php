@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Shop;
+use App\Models\Visit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -74,6 +75,20 @@ class ShopController extends Controller
             ], 400);
         }
     }
+
+
+    public function detail($id)
+    {
+        $data = Shop::where('id', $id)->first();
+        $lastVisit = Visit::where('shop_id', $id)->latest()->first();
+        $data->last_visit_time = date('D, d F Y h:i:s a', strtotime($lastVisit->created_at));
+        //return response()->json($data);
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ], 200);
+    }
+
 
     public function delete($id)
     {
