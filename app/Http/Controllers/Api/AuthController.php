@@ -40,18 +40,28 @@ class AuthController extends Controller
                 );
                 $image = explode("public/",$image);
                 // $image = implode("storage/",$image);
- 
-                $user = User::create([
-                        'name'=> $request->name,
-                        'phone'=> $request->phone,
-                        'email'=> $request->email,
-                        'role'=> $request->role,
-                        'designation'=> $request->designation,
-                        'password'=> Hash::make($request->password),
-                        // 'image'=> $image,
-                        'image'=> $image[1],
-                        'division_id'=> $request->division_id,
-                ]);
+
+                $user = new User();
+                $user->name = $request->name;
+                $user->phone = $request->phone;
+                $user->email = $request->email;
+                $user->role = $request->role;
+                $user->designation = $request->designation;
+                $user->password = Hash::make($request->password);
+                $user->image = $image[1];
+                $user->division_ids = $request->division_id;
+                $user->save();
+//                $user = User::create([
+//                        'name'=> $request->name,
+//                        'phone'=> $request->phone,
+//                        'email'=> $request->email,
+//                        'role'=> $request->role,
+//                        'designation'=> $request->designation,
+//                        'password'=> Hash::make($request->password),
+//                        // 'image'=> $image,
+//                        'image'=> $image[1],
+//                        'division_ids'=> $request->division_id,
+//                ]);
             } catch (\Throwable $th) {
                 Log::error($th->getMessage());
                 return response()->json([
@@ -59,22 +69,32 @@ class AuthController extends Controller
                     'message' => 'Image Failed!',
                 ], 400);
             }
-        
+
         } else {
-                $user = User::create([
-                    'name'=> $request->name,
-                    'phone'=> $request->phone,
-                    'email'=> $request->email,
-                    'role'=> $request->role,
-                    'designation'=> $request->designation,
-                    'password'=> Hash::make($request->password),
-                    'image'=> NULL,
-                    'division_id'=> $request->division_id,
-                ]);
-        }   
+            $user = new User();
+            $user->name = $request->name;
+            $user->phone = $request->phone;
+            $user->email = $request->email;
+            $user->role = $request->role;
+            $user->designation = $request->designation;
+            $user->password = Hash::make($request->password);
+            $user->image = NULL;
+            $user->division_ids = $request->division_id;
+            $user->save();
+//                $user = User::create([
+//                    'name'=> $request->name,
+//                    'phone'=> $request->phone,
+//                    'email'=> $request->email,
+//                    'role'=> $request->role,
+//                    'designation'=> $request->designation,
+//                    'password'=> Hash::make($request->password),
+//                    'image'=> NULL,
+//                    'division_ids'=> $request->division_id,
+//                ]);
+        }
                 return response()->json([
                     'success' => true,
-                    'message' => 'User Registered Succesfully!',
+                    'message' => 'User Registered Successfully!',
                     'data' =>  $user
                 ], 200);
     }

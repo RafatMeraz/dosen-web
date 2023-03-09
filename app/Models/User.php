@@ -8,6 +8,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
+
 
 class User extends Authenticatable
 {
@@ -30,15 +32,24 @@ class User extends Authenticatable
         'status', // 1 = block,  0  = active
     ];
 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'division_ids' => 'array',
+    ];
+
+    use HasJsonRelationships;
+
+
     public function visits()
     {
         return $this->hasMany(Visit::class);
     }
 
 
-    public function division()
+    public function division(): \Staudenmeir\EloquentJsonRelations\Relations\BelongsToJson
     {
-        return $this->belongsTo(Division::class);
+//        return $this->belongsTo(Division::class, 'division_id');
+        return $this->belongsToJson(Division::class, 'division_ids');
     }
 
     public function expenses()
@@ -61,7 +72,5 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+
 }
