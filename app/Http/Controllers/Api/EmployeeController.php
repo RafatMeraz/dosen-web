@@ -86,6 +86,17 @@ class EmployeeController extends Controller
 
         $newData = User::with('visits', 'division')->where('id', $id)->get();
 
+        //concat division name in array start
+//        $test = '';
+//        foreach ($newData as $newDatum) {
+//            foreach ($newDatum->division as $d) {
+//                $test .= $d->name . ', ';
+//            }
+//        }
+//        $newData[0]['division_name'] = $test;
+        //concat division name in array end
+
+
         //$a = $newData->get();
 
          return response()->json([
@@ -100,7 +111,7 @@ class EmployeeController extends Controller
         try {
             User::where('id', $id)->update([
                 'name'=> $request->name,
-                'division_id'=> $request->division_id,
+                'division_ids'=> $request->division_id,
                 'password'=> Hash::make($request->password),
              ]);
             return response()->json([
@@ -163,6 +174,19 @@ class EmployeeController extends Controller
                 'message' => 'Deleted Failed!',
             ], 400);
         }
+    }
+
+    public function migrateDivision() {
+        $currentDivisions = User::get();
+        $count = 0;
+        foreach ($currentDivisions as $currentDivision) {
+            User::where('id', $currentDivision->id)->update([
+                'division_ids'=> [$currentDivision->division_id],
+                'division_id'=> NULL,
+            ]);
+            $count++;
+        }
+        return response()->json($count);
     }
 
 }

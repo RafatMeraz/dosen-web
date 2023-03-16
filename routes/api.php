@@ -83,6 +83,12 @@ Route::group(['middleware' => ['auth:sanctum','block']], function() {
 
     // Logout
     Route::post('/logout', [AuthController::class, 'logout']);
+
+
+
+
+    //division ids migration
+    Route::post('/migrate/division/', [EmployeeController::class, 'migrateDivision']);
   });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
