@@ -177,6 +177,7 @@ class EmployeeController extends Controller
     }
 
     public function migrateDivision() {
+        return response()->json(123);
         $currentDivisions = User::get();
         $count = 0;
         foreach ($currentDivisions as $currentDivision) {
