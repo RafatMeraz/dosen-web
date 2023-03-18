@@ -6,6 +6,8 @@ use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
+
 
 class Division extends Model
 {
@@ -14,10 +16,13 @@ class Division extends Model
     protected $fillable = [
         'name',
     ];
+    use HasJsonRelationships;
 
-    public function users()
+
+    public function users(): \Staudenmeir\EloquentJsonRelations\Relations\BelongsToJson
     {
-        return $this->hasMany(User::class);
+//        return $this->hasMany(User::class, 'division_ids');
+        return $this->hasManyJson(User::class, 'division_ids');
     }
 
 

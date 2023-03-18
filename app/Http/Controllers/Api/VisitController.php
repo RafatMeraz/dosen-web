@@ -235,29 +235,57 @@ class VisitController extends Controller
 
         // return 'All';
         else {
-            $data = DB::table("visits")
-            ->join('users', 'users.id', 'visits.user_id')
-            ->join('shops', 'shops.id', 'visits.shop_id')
-            ->select(
-                'visits.id as visit_id',
-                'visits.remarks as remarks',
-                'visits.image as visit_image',
-                'visits.created_at as visit_dateTime',
-                'visits.user_id as employee_id',
-                'users.name as employee_name',
-                'users.image as employee_image',
-                'shops.id as shop_id',
-                'shops.name as shop_name',
-                'shops.address as shop_address',
-                // DB::raw("(
-                //     SELECT COUNT(visits.id) FROM visits
-                //     WHERE visits.shop_id = shops.id
-                //     AND
-                //     visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as thisShop_last30days_visits "),
-            )
-            // ->groupBy('visits.id')
-            ->orderBy('visits.id', 'DESC')
-            ->paginate(25);
+
+            if(auth()->user()->role === 'admin' || auth()->user()->role === 'manager') {
+                $data = DB::table("visits")
+                    ->join('users', 'users.id', 'visits.user_id')
+                    ->join('shops', 'shops.id', 'visits.shop_id')
+                    ->select(
+                        'visits.id as visit_id',
+                        'visits.remarks as remarks',
+                        'visits.image as visit_image',
+                        'visits.created_at as visit_dateTime',
+                        'visits.user_id as employee_id',
+                        'users.name as employee_name',
+                        'users.image as employee_image',
+                        'shops.id as shop_id',
+                        'shops.name as shop_name',
+                        'shops.address as shop_address',
+                    // DB::raw("(
+                    //     SELECT COUNT(visits.id) FROM visits
+                    //     WHERE visits.shop_id = shops.id
+                    //     AND
+                    //     visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as thisShop_last30days_visits "),
+                    )
+                    // ->groupBy('visits.id')
+                    ->orderBy('visits.id', 'DESC')
+                    ->paginate(25);
+            } else {
+                $data = DB::table("visits")
+                    ->join('users', 'users.id', 'visits.user_id')
+                    ->join('shops', 'shops.id', 'visits.shop_id')
+                    ->where('visits.user_id', auth()->id())
+                    ->select(
+                        'visits.id as visit_id',
+                        'visits.remarks as remarks',
+                        'visits.image as visit_image',
+                        'visits.created_at as visit_dateTime',
+                        'visits.user_id as employee_id',
+                        'users.name as employee_name',
+                        'users.image as employee_image',
+                        'shops.id as shop_id',
+                        'shops.name as shop_name',
+                        'shops.address as shop_address',
+                    // DB::raw("(
+                    //     SELECT COUNT(visits.id) FROM visits
+                    //     WHERE visits.shop_id = shops.id
+                    //     AND
+                    //     visits.created_at >= '$startDate .  00:00:00' AND visits.created_at <= '$endDate . 23:59:59' ) as thisShop_last30days_visits "),
+                    )
+                    // ->groupBy('visits.id')
+                    ->orderBy('visits.id', 'DESC')
+                    ->paginate(25);
+            }
         }
 
         return response()->json([
